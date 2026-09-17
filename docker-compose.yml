@@ -1,0 +1,26 @@
+services:
+  postgres:
+    image: postgres:16
+    container_name: veridian-postgres
+
+    restart: unless-stopped
+
+    environment:
+      POSTGRES_DB: veridian_it
+      POSTGRES_USER: veridian_admin
+      POSTGRES_PASSWORD: veridian_password
+
+    ports:
+      - "5432:5432"
+
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U veridian_admin -d veridian_it"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  postgres_data:
